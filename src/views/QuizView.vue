@@ -1,10 +1,11 @@
 <script setup>
 
-import {ref,computed} from 'vue'
+import {ref,computed,onUpdated} from 'vue'
 import {useRoute} from 'vue-router'
 
 import Container from '../components/Container.vue';
 import Question from '../components/Question.vue';
+import ProgressBar from '../components/ProgressBar.vue'
 
 import q from './../data/data.json'
 
@@ -13,7 +14,8 @@ const route = useRoute()
 const quiz_id = parseInt(route.params.quiz_id)
 const quiz = q.find(q_ => q_.id === parseInt(quiz_id))
 const questions = quiz.questions
-const questionCount = questions.length 
+const questionCount = ref(questions.length)
+const percentage = ref(0)
 
 const correctAnswerCount = ref(0)
 const currentQuestionIndex = ref(0)
@@ -28,16 +30,18 @@ const answerSelected = (isCorrect) => {
     if(isCorrect === true){
         correctAnswerCount.value++
     }
-
-    console.log(currentQuestionIndex.value + " " + questionCount)
-
+ 
     currentQuestionIndex.value++
+
+
+    percentage.value = (currentQuestionIndex.value)  / questionCount.value
 
 }
 
 </script>
 <template>
     <Container>
+        <ProgressBar :percentage="percentage" />
         <Question v-if="currentQuestionIndex !== questionCount" @answerSelected="answerSelected" :question="qurrentQuestion"/>
         <div v-else class="text-center flex flex-col justify-center items-center gap-10">
             <h1 class="text-3xl">
