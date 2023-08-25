@@ -39,10 +39,11 @@ const answerSelected = (isCorrect) => {
 <template>
     <Container>
         <Question v-if="currentQuestionIndex !== questionCount" @answerSelected="answerSelected" :question="qurrentQuestion"/>
-        <div v-else class="text-center">
+        <div v-else class="text-center flex flex-col justify-center items-center gap-10">
             <h1 class="text-3xl">
                 Your Score : {{ correctAnswerCount }} / {{ questionCount }}
             </h1>
+            <router-link to="/" class="p-3 text-white font-bold box-border border rounded bg-green-500 hover:bg-green-600 w-content flex-auto">Return to Quizes</router-link>
         </div>
     </Container>
 </template>
